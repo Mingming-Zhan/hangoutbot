@@ -2,6 +2,16 @@ var hangoutsBot = require("hangouts-bot");
 var bot = new hangoutsBot("red95014@gmail.com", "!qaz2wsx");
 var request = require('request');
 var express = require('express');
+const mysql = require('mysql');
+
+var pool = mysql.createPool({  
+    host: '52.23.106.231',  //52.23.106.231 //localhost
+    user: 'root',  
+    password: '!qaz2wsx',  //!qaz2wsx //123456
+    database: 'hubot2',  
+    port: '3306',
+    charset: 'UTF8MB4_GENERAL_CI' 
+});
 
 var app = express();
 app.set('port', 8080);
@@ -9,10 +19,30 @@ app.set('port', 8080);
 
 bot.on('online', function() {
     console.log('online');
+    var insertSql = "insert into hangout(online)" + "values('online')";
+    pool.getConnection(function(err, connection){
+        connection.query(insertSql, async function(err, res){
+            if(!err){
+            }else{
+                return ;
+            }
+        });
+        connection.release();
+    });
 });
 
 bot.on('message', function(from, message) {
     console.log(from + ">> " + message);
+    var insertSqlmsg = "insert into hangout(online,message,from)" + "values('line', '"+message+"', '"+from+"')";
+    pool.getConnection(function(err, connection){
+        connection.query(insertSqlmsg, async function(err, res){
+            if(!err){
+            }else{
+                return ;
+            }
+        });
+        connection.release();
+    });
 
     var options1 = {
         method: 'GET',
