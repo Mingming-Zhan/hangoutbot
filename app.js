@@ -1,5 +1,5 @@
 var hangoutsBot = require("hangouts-bot");
-var bot = new hangoutsBot("red95014@gmail.com", "!qaz2wsx");
+var bot = new hangoutsBot("red95014@gmail.com", process.env.password || config.password);
 var request = require('request');
 var express = require('express');
 const mysql = require('mysql');
